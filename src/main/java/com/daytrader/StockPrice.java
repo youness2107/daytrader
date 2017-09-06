@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.daytrader.prices.AplhaVantageStockPrice;
+import com.daytrader.prices.AlphaVantageStockPrice;
 
 
 public class StockPrice extends HttpServlet {
@@ -26,11 +26,11 @@ public class StockPrice extends HttpServlet {
 	  	String ticker = request.getParameter("ticker");
 	  	String date = request.getParameter("date");
 	  	int intraday = Integer.valueOf(request.getParameter("intraday"));
-		String s = AplhaVantageStockPrice.getJSONTimeSeriesPrices(ticker, intraday, date);
+		String s = AlphaVantageStockPrice.getJSONTimeSeriesPrices(ticker, intraday, date);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		System.out.println(s);
 	    response.getWriter().write(s);
-	  }	
+  }	
   
 }

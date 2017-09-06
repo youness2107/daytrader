@@ -7,11 +7,44 @@
     <servlet-name>StockPriceEngine</servlet-name>
     <servlet-class>com.daytrader.StockPrice</servlet-class>
   </servlet>
+    <servlet>
+  <servlet-name>IndicatorEngine</servlet-name>
+    <servlet-class>com.daytrader.IndicatorServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ComboEngine</servlet-name>
+    <servlet-class>com.daytrader.ComboServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>StrategyEngine</servlet-name>
+    <servlet-class>com.daytrader.StrategyServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ContinuationEngine</servlet-name>
+    <servlet-class>com.daytrader.ContinuationStrategyServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>StockPriceEngine</servlet-name>
     <url-pattern>/stock</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ContinuationEngine</servlet-name>
+    <url-pattern>/continuation</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>IndicatorEngine</servlet-name>
+    <url-pattern>/indicator</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ComboEngine</servlet-name>
+    <url-pattern>/combo</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>StrategyEngine</servlet-name>
+    <url-pattern>/strategy</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
+<!--     <welcome-file>combo.html</welcome-file> -->
   </welcome-file-list>
 </web-app>

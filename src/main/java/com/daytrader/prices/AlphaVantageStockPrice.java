@@ -7,7 +7,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -17,6 +16,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import com.daytrader.indicators.Indicators;
 
 import eu.verdelhan.ta4j.Tick;
 import eu.verdelhan.ta4j.TimeSeries;
@@ -29,7 +30,7 @@ import okhttp3.Response;
  * @author youne
  *
  */
-public class AplhaVantageStockPrice {
+public class AlphaVantageStockPrice {
 	
 
 	//https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=15min&outputsize=full&apikey=demo
@@ -41,6 +42,7 @@ public class AplhaVantageStockPrice {
 	private static final String OUTPUT_SIZE = "full";
 	
 	private static String discardTickTimeStamp = "09:30:00";
+	private static long timeZoneCorrection = 4*3600000L;
 	/**
 	 * Transforms the Json String returned by alphavantage
 	 * to a list of TickDTOs
@@ -93,13 +95,17 @@ public class AplhaVantageStockPrice {
     	try {
     		date = df.parse(dateStr);
          	Long epochTime = date.toInstant().toEpochMilli();
-            endTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(epochTime), ZoneId.systemDefault());
+         	epochTime += timeZoneCorrection;
+//         	ZoneId central = ZoneId.of("America/Chicago");
+//         	ZoneOffset.UTC;
+            endTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(epochTime), ZoneId.of("Z"));
     	}
     	catch (Exception e) {
     		
     	}
     	return endTime;
     }
+    
 	
 	public static String buildAPICall(String base, String apiKey, String function, 
 			String symbol, String interval, String outputSize) {
@@ -140,7 +146,7 @@ public class AplhaVantageStockPrice {
 	 */
 	public static TimeSeries getTimeSeries(String ticker, int intraday, String date) {
 		String jsonStr = getStock1minData(ticker);
-		List<TickDTO> tickDTOs = AplhaVantageStockPrice.parseIntradayJSONData(jsonStr, date); 
+		List<TickDTO> tickDTOs = AlphaVantageStockPrice.parseIntradayJSONData(jsonStr, date); 
 		TimeSeries series = new TimeSeries();
 		for (TickDTO tickDTO : tickDTOs) {
 			Tick tick = new Tick(tickDTO.getTimePeriod(), tickDTO.getEndTime(), 
@@ -160,15 +166,15 @@ public class AplhaVantageStockPrice {
 	 * @param series
 	 * @return
 	 */
-	private static String getJSONTimeSeries(TimeSeries series) {
+	private static String getCandleStickJSONTimeSeries(TimeSeries series) {
 	    JSONArray jsonChart = new JSONArray();
 		int tickCount = series.getTickCount();
 	    for (int i = 0; i < tickCount; i++) {
 	    	Tick tick = series.getTick(i);
 	    	// min open close max
 	    	JSONArray jsonTick = new JSONArray();
-	    	ZonedDateTime date = tick.getEndTime();
-	    	String dateStr = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm").format(date);
+	    	ZonedDateTime date = tick.getBeginTime();
+	    	Long dateStr = date.toEpochSecond();
 	    	jsonTick.add(dateStr);
 	    	jsonTick.add(tick.getMinPrice());
 	    	jsonTick.add(tick.getOpenPrice());
@@ -178,11 +184,18 @@ public class AplhaVantageStockPrice {
 	    }
 		return jsonChart.toString();
 	}
+	
 
 	
 	public static String getJSONTimeSeriesPrices(String ticker, int intraday, String date) {
 		TimeSeries ts = getTimeSeries(ticker, intraday, date);
-		String s = getJSONTimeSeries(ts);
+		String s = getCandleStickJSONTimeSeries(ts);
+		return s;
+	}
+	
+	public static String getJSONOverlaidTimeSeriesPrices(String ticker, int intraday, String date) {
+		TimeSeries ts = getTimeSeries(ticker, intraday, date);
+		String s = Indicators.getOverlaidIndicators(ts);
 		return s;
 	}
     

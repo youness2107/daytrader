@@ -31,17 +31,15 @@ google.charts.setOnLoadCallback(drawChart);
 	function drawChart() {
 	  
 	  var data = new google.visualization.DataTable();
-	  data.addColumn('string', 'Task');
+	  data.addColumn('datetime', 'time');
 	  data.addColumn('number', 'min');
 	  data.addColumn('number', 'open');
 	  data.addColumn('number', 'close');
 	  data.addColumn('number', 'high');
-	  
-	  var rows = new Array ();
-	  
+	  	  
 	  var arrayLength = table.length;
 	  for (var i = 0; i < arrayLength; i++) {
-		  table[i][0]  = "'" + table[i][0] + "'";
+		  table[i][0]  = new Date(table[i][0]*1000);
 	  }
 	  
 	  data.addRows(table);
@@ -66,4 +64,3 @@ google.charts.setOnLoadCallback(drawChart);
 	  chart.draw(data, options);
 	}
 }
-

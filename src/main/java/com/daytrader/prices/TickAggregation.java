@@ -60,9 +60,8 @@ public class TickAggregation {
 			}
 			totalVolume = totalVolume.plus(currentTick.getVolume());
 		}
-		Decimal avgVolume = totalVolume.dividedBy(Decimal.valueOf(count));
 		ZonedDateTime endTime = minuteSeries.getTick(endIndex).getEndTime();
-		Tick aggregatedTick = new Tick(Duration.ofMinutes(count), endTime, open, high, low, close, avgVolume);
+		Tick aggregatedTick = new Tick(Duration.ofMinutes(count), endTime, open, high, low, close, totalVolume);
 		return aggregatedTick;
 	}
 

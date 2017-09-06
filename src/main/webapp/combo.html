@@ -8,15 +8,11 @@
   </head>
 
   <body>
-    <h1>Day Trader v-1.0.3</h1>
+    <h1>Day Trader v-1.0.1 -- Combo Charts</h1>
     
      <script src="https://code.jquery.com/jquery-latest.min.js"></script>
      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-     <script type="text/javascript" src="index.js"></script>
      <script type="text/javascript" src="combo.js"></script>
-     <script type="text/javascript" src="indicators.js"></script>
-     <script type="text/javascript" src="strategy.js"></script>
-     
        
   	<div id="info">
   		Ticker:<br>
@@ -25,40 +21,18 @@
   		<input type="text" name="date" id="date" value="2017-08-24"><br>
   		intraday:<br>
   		<input type="text" name="intraday" id="intraday" value="1"><br><br>
-  		perc1:<br>
-  		<input type="text" name="perc1" id="perc1" value="0"><br><br>
-  		perc2:<br>
-  		<input type="text" name="perc2" id="perc2" value="0"><br><br>
-  		perc3:<br>
-  		<input type="text" name="perc3" id="perc3" value="0"><br><br>
-  		
   		<button type="button" id="okButton">Price</button>
-  		<button type="button" id="indicatorsButton">Indicators</button>
-  		<button type="button" id="comboButton">Combo (Price + EMA)</button>  
-  		<button type="button" id="strategyButton">Strategy</button>  
-  		<button type="button" id="continuationButton">Continuation Strategy</button>  
-  				
+  		<button type="button" id="indicatorsButton">Indicators</button>  		
 	</div>
     
-    <div id="strategy_div">
-    </div>
-    
-    <div id="continuation_div">
-    </div>
     
 	<div id="chart_div" style="width: 1450px; height: 550px;"></div>
-
-<!-- 	<div id="combo_div" style="width: 1450px; height: 550px;"></div> -->
-
-	<div id="combo_div"></div>
     
     <div id="test">
     </div>
     
     <div id="indicators">
     </div>
-    
 
-  
   </body>
 </html>
